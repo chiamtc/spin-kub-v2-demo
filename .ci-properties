@@ -1,0 +1,3 @@
+sh """"echo 'docker_image = ${DOCKER_REPOSITORY}:${COMMIT_HASH}' >> .ci-properties"""
+sh """"echo 'docker_tag = ${COMMIT_HASH}' >> .ci-properties"""
+archiveArtifacts '.ci-properties'
