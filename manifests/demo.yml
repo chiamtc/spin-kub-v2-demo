@@ -1,3 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spinnaker-demo-config
+  namespace: default
+data:
+  NEW_FEATURE: "true"
+
+---
+
 apiVersion: apps/v1beta2
 kind: Deployment
 metadata:
@@ -21,10 +31,29 @@ spec:
     spec:
       containers:
       - name: primary
-        image: index.docker.io/chiamtc/spin-kub-v2-demo:latest
+        image: index.docker.io/chiamtc/spin-kub-v2-demo
         ports:
         - containerPort: 8000
         readinessProbe:
           httpGet:
             path: /
             port: 8000
+        envFrom:
+        - configMapRef:
+            name: spinnaker-demo-config
+
+---
+
+kind: Service
+apiVersion: v1
+metadata:
+  name: spinnaker-demo
+  namespace: default
+spec:
+  selector:
+    source: demo
+    app: spinnaker
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
