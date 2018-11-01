@@ -32,7 +32,7 @@ spec:
               name: spinnaker-demo-config
         volumes:
         - configMap:
-            name: configmap-v001
+            name: configmap
           name: spinnaker-demo-config
 
 ---
